@@ -7,7 +7,7 @@ pandas
 Pillow
 psutil
 pydicom
-scikit-lear
+scikit-learn
 scikit-image
 scipy
 seaborn
