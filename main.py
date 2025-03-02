@@ -1,7 +1,7 @@
 import argparse
 import os
-from object_detection.prepair_roi_det_dataset import prepare_roi_det_dataset
-from object_detection.train_yolox import train_yolox
+from src.object_detection.prepair_roi_det_dataset import prepare_roi_det_dataset
+from src.object_detection.train_yolox import train_yolox
 
 def parse_args():
     parser = argparse.ArgumentParser('Entrypoint of the project')
