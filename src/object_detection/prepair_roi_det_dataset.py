@@ -9,7 +9,7 @@ import os
 import shutil
 
 from settings import SETTINGS
-from object_detection.yolov5_2_coco import YOLOV5ToCOCO
+from src.object_detection.yolov5_2_coco import YOLOV5ToCOCO
 
 from src.image_preprocessing import misc as misc_utils
 from src.image_preprocessing.dicom import convert_with_dicomsdl_parallel
