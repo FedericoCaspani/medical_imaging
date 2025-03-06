@@ -15,6 +15,7 @@ scipy
 seaborn
 tensorrt  # TensorRT (ensure this is compatible with your CUDA version)
 torch
+torch2trt
 torchvision
 tqdm
 yacs
