@@ -19,7 +19,6 @@ def prepare_roi_det_dataset(dataset = 'breast_cancer', num_workers = 4):
     ASSET_ROI_YOLOV5_DATA_DIR = os.path.join(SETTINGS.ASSETS_DIR, 'data', 'roi_det_yolov5_format')
 
     KAGGLE_DCM_DIR = os.path.join(SETTINGS.RAW_DATA_DIR,
-                                  'rsna-breast-cancer-detection',
                                   'train_images')
     ROI_YOLOV5_DATA_DIR = os.path.join(SETTINGS.PROCESSED_DATA_DIR,
                                        'roi_det_yolox', 'yolov5_format')
