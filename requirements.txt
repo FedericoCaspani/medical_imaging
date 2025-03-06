@@ -15,7 +15,7 @@ scipy
 seaborn
 tensorrt  # TensorRT (ensure this is compatible with your CUDA version)
 torch
-torch2trt
+git+https://github.com/NVIDIA-AI-IOT/torch2trt.git #torch2trt
 torchvision
 tqdm
 yacs
