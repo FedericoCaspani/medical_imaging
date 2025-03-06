@@ -1,5 +1,5 @@
 {
-    "RAW_DATA_DIR": "./datasets/raw/",
+    "RAW_DATA_DIR": "/kaggle/input/rsna-breast-cancer-detection",
     "PROCESSED_DATA_DIR": "./datasets/processed/",
     "MODEL_CHECKPOINT_DIR": "./checkpoints/",
     "MODEL_FINAL_SELECTION_DIR": "./assets/reproduce/",
