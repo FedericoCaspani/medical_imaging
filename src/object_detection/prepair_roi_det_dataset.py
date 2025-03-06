@@ -8,7 +8,7 @@ import argparse
 import os
 import shutil
 
-from settings import SETTINGS
+from src.settings import SETTINGS
 from src.object_detection.yolov5_2_coco import YOLOV5ToCOCO
 
 from src.image_preprocessing import misc as misc_utils
