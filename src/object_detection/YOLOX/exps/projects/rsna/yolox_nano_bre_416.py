@@ -7,6 +7,7 @@ import os
 from yolox.exp import Exp as MyExp
 
 import torch.nn as nn
+from settings import SETTINGS
 
 
 
@@ -104,7 +105,6 @@ class Exp(MyExp):
         self.dataset = None
         self.seed = 42
 
-        from settings import SETTINGS
         self.output_dir = os.path.join(SETTINGS.MODEL_CHECKPOINT_DIR, 'yolox_roi_det')
         # dir of dataset images, if data_dir is None, this project will use `datasets` dir
         self.data_dir = os.path.join(SETTINGS.PROCESSED_DATA_DIR,
