@@ -2,8 +2,8 @@ dicomsdl
 loguru
 matplotlib
 numpy
-nvidia-tensorrt
-nvidia-pyindex  # required for TensorRT
+nvidia-tensorrt==8.5.3.1  # Specify version of TensorRT
+nvidia-pyindex  # Required for TensorRT
 opencv-python
 pandas
 Pillow
@@ -13,9 +13,9 @@ scikit-learn
 scikit-image
 scipy
 seaborn
-tensorrt  # TensorRT (ensure this is compatible with your CUDA version)
-torch
-git+https://github.com/NVIDIA-AI-IOT/torch2trt.git #torch2trt
-torchvision
+tensorrt==8.5.3.1  # Ensure TensorRT version matches
+torch==1.13.1  # Ensure this matches with torch2trt
+torch2trt==0.4.0  # This is the recommended version of torch2trt
+torchvision==0.14.1  # Ensure the torchvision version is compatible with torch
 tqdm
 yacs
