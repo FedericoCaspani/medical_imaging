@@ -3,7 +3,7 @@
 import os
 import shutil
 
-from settings import SETTINGS
+from src.settings import SETTINGS
 
 def select_best_ckp():
     SRC_DIR = os.path.join(SETTINGS.MODEL_CHECKPOINT_DIR, 'yolox_roi_det',
