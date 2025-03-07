@@ -2,8 +2,8 @@ dicomsdl
 loguru
 matplotlib
 numpy
-nvidia-tensorrt==8.5.3.1  # Specify version of TensorRT
-nvidia-pyindex  # Required for TensorRT
+nvidia-tensorrt
+nvidia-pyindex 
 opencv-python
 pandas
 Pillow
