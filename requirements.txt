@@ -15,7 +15,7 @@ scipy
 seaborn
 tensorrt
 torch
-torch2trt
+#torch2trt
 torchvision
 tqdm
 yacs
