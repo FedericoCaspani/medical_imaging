@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 # Copyright (c) Megvii Inc. All rights reserved.
 
 import numpy as np
@@ -14,7 +15,6 @@ __all__ = [
     "adjust_box_anns",
     "xyxy2xywh",
     "xyxy2cxcywh",
-    "cxcywh2xyxy",
 ]
 
 
@@ -132,12 +132,4 @@ def xyxy2cxcywh(bboxes):
     bboxes[:, 3] = bboxes[:, 3] - bboxes[:, 1]
     bboxes[:, 0] = bboxes[:, 0] + bboxes[:, 2] * 0.5
     bboxes[:, 1] = bboxes[:, 1] + bboxes[:, 3] * 0.5
-    return bboxes
-
-
-def cxcywh2xyxy(bboxes):
-    bboxes[:, 0] = bboxes[:, 0] - bboxes[:, 2] * 0.5
-    bboxes[:, 1] = bboxes[:, 1] - bboxes[:, 3] * 0.5
-    bboxes[:, 2] = bboxes[:, 0] + bboxes[:, 2]
-    bboxes[:, 3] = bboxes[:, 1] + bboxes[:, 3]
     return bboxes

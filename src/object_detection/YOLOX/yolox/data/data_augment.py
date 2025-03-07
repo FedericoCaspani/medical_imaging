@@ -139,7 +139,7 @@ def _mirror(image, boxes, prob=0.5):
     return image, boxes
 
 
-def preproc(img, input_size, swap=(2, 0, 1)):
+def preproc(img, input_size, swap=(2, 0, 1), interpolation = cv2.INTER_AREA):
     if len(img.shape) == 3:
         padded_img = np.ones((input_size[0], input_size[1], 3), dtype=np.uint8) * 114
     else:
@@ -149,7 +149,7 @@ def preproc(img, input_size, swap=(2, 0, 1)):
     resized_img = cv2.resize(
         img,
         (int(img.shape[1] * r), int(img.shape[0] * r)),
-        interpolation=cv2.INTER_LINEAR,
+        interpolation=interpolation,
     ).astype(np.uint8)
     padded_img[: int(img.shape[0] * r), : int(img.shape[1] * r)] = resized_img
 
@@ -159,17 +159,18 @@ def preproc(img, input_size, swap=(2, 0, 1)):
 
 
 class TrainTransform:
-    def __init__(self, max_labels=50, flip_prob=0.5, hsv_prob=1.0):
+    def __init__(self, max_labels=50, flip_prob=0.5, hsv_prob=1.0, interpolation = cv2.INTER_AREA):
         self.max_labels = max_labels
         self.flip_prob = flip_prob
         self.hsv_prob = hsv_prob
+        self.interpolation = interpolation
 
     def __call__(self, image, targets, input_dim):
         boxes = targets[:, :4].copy()
         labels = targets[:, 4].copy()
         if len(boxes) == 0:
             targets = np.zeros((self.max_labels, 5), dtype=np.float32)
-            image, r_o = preproc(image, input_dim)
+            image, r_o = preproc(image, input_dim, interpolation = self.interpolation)
             return image, targets
 
         image_o = image.copy()
@@ -184,7 +185,7 @@ class TrainTransform:
             augment_hsv(image)
         image_t, boxes = _mirror(image, boxes, self.flip_prob)
         height, width, _ = image_t.shape
-        image_t, r_ = preproc(image_t, input_dim)
+        image_t, r_ = preproc(image_t, input_dim, interpolation= self.interpolation)
         # boxes [xyxy] 2 [cx,cy,w,h]
         boxes = xyxy2cxcywh(boxes)
         boxes *= r_
@@ -194,7 +195,7 @@ class TrainTransform:
         labels_t = labels[mask_b]
 
         if len(boxes_t) == 0:
-            image_t, r_o = preproc(image_o, input_dim)
+            image_t, r_o = preproc(image_o, input_dim, interpolation=self.interpolation)
             boxes_o *= r_o
             boxes_t = boxes_o
             labels_t = labels_o
@@ -228,13 +229,14 @@ class ValTransform:
         data
     """
 
-    def __init__(self, swap=(2, 0, 1), legacy=False):
+    def __init__(self, swap=(2, 0, 1), legacy=False, interpolation = cv2.INTER_AREA):
         self.swap = swap
         self.legacy = legacy
+        self.interpolation = interpolation
 
     # assume input is cv2 img for now
     def __call__(self, img, res, input_size):
-        img, _ = preproc(img, input_size, self.swap)
+        img, _ = preproc(img, input_size, self.swap, self.interpolation)
         if self.legacy:
             img = img[::-1, :, :].copy()
             img /= 255.0

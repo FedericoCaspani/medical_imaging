@@ -90,8 +90,8 @@ class COCOEvaluator:
         nmsthre: float,
         num_classes: int,
         testdev: bool = False,
-        per_class_AP: bool = True,
-        per_class_AR: bool = True,
+        per_class_AP: bool = False,
+        per_class_AR: bool = False,
     ):
         """
         Args:
@@ -101,8 +101,8 @@ class COCOEvaluator:
             confthre: confidence threshold ranging from 0 to 1, which
                 is defined in the config file.
             nmsthre: IoU threshold of non-max supression ranging from 0 to 1.
-            per_class_AP: Show per class AP during evalution or not. Default to True.
-            per_class_AR: Show per class AR during evalution or not. Default to True.
+            per_class_AP: Show per class AP during evalution or not. Default to False.
+            per_class_AR: Show per class AR during evalution or not. Default to False.
         """
         self.dataloader = dataloader
         self.img_size = img_size
@@ -153,6 +153,11 @@ class COCOEvaluator:
 
             x = torch.ones(1, 3, test_size[0], test_size[1]).cuda()
             model(x)
+            del model
+            import gc
+            gc.collect()
+            torch.cuda.empty_cache()
+
             model = model_trt
 
         for cur_iter, (imgs, _, info_imgs, ids) in enumerate(
@@ -167,6 +172,7 @@ class COCOEvaluator:
                     start = time.time()
 
                 outputs = model(imgs)
+                # print(type(imgs), imgs.shape, type(outputs), outputs.shape)
                 if decoder is not None:
                     outputs = decoder(outputs, dtype=outputs.type())
 
@@ -177,6 +183,7 @@ class COCOEvaluator:
                 outputs = postprocess(
                     outputs, self.num_classes, self.confthre, self.nmsthre
                 )
+                # print(outputs[0].shape)
                 if is_time_record:
                     nms_end = time_synchronized()
                     nms_time += nms_end - infer_end
@@ -188,9 +195,6 @@ class COCOEvaluator:
 
         statistics = torch.cuda.FloatTensor([inference_time, nms_time, n_samples])
         if distributed:
-            # different process/device might have different speed,
-            # to make sure the process will not be stucked, sync func is used here.
-            synchronize()
             data_list = gather(data_list, dst=0)
             output_data = gather(output_data, dst=0)
             data_list = list(itertools.chain(*data_list))
@@ -296,6 +300,11 @@ class COCOEvaluator:
                 from pycocotools.cocoeval import COCOeval
 
                 logger.warning("Use standard COCOeval.")
+
+            # from pycocotools.cocoeval import COCOeval
+
+            print('EVALUATOR:', COCOeval)
+
 
             cocoEval = COCOeval(cocoGt, cocoDt, annType[1])
             cocoEval.evaluate()

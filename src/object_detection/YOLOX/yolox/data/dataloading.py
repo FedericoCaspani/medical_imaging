@@ -106,8 +106,26 @@ def list_collate(batch):
     return items
 
 
-def worker_init_reset_seed(worker_id):
-    seed = uuid.uuid4().int % 2**32
-    random.seed(seed)
-    torch.set_rng_state(torch.manual_seed(seed).get_state())
-    np.random.seed(seed)
+# original YOLOX code
+def worker_init_reset_seed(seed):
+    def _seed_all(worker_id):
+        worker_seed = uuid.uuid4().int % 2**32
+        random.seed(worker_seed)
+        torch.set_rng_state(torch.manual_seed(worker_seed).get_state())
+        np.random.seed(worker_seed)
+    return _seed_all
+
+
+# def worker_init_reset_seed(seed):
+#     def _seed_all(worker_id):
+#         from yolox.utils import seed_everything
+#         # worker_seed = worker_id + seed
+#         worker_seed = seed
+        
+#         seed_everything(worker_seed)
+#         print(f'DO WORKER INIT RESET SEED WITH SEED = {worker_seed}, WORKER_ID = {worker_id}')
+
+#     return _seed_all
+
+
+

@@ -156,7 +156,23 @@ class MosaicDetection(Dataset):
         else:
             self._dataset._input_dim = self.input_dim
             img, label, img_info, img_id = self._dataset.pull_item(idx)
+            # default behavior
+            # img, label = random_affine(
+            #     img,
+            #     label,
+            #     target_size=self.input_dim,
+            #     degrees=self.degrees,
+            #     translate=self.translate,
+            #     scales=self.scale,
+            #     shear=self.shear,
+            # )
             img, label = self.preproc(img, label, self.input_dim)
+
+            # import os
+            # save_path = os.path.join('temp1', f'{idx}_{img_id}.png')
+            # os.makedirs('temp1', exist_ok = True)
+            # cv2.imwrite(save_path, img.transpose(1, 2, 0))
+
             return img, label, img_info, img_id
 
     def mixup(self, origin_img, origin_labels, input_dim):

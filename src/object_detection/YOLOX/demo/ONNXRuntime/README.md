@@ -2,18 +2,7 @@
 
 This doc introduces how to convert your pytorch model into onnx, and how to run an onnxruntime demo to verify your convertion.
 
-### Step1: Install onnxruntime
-
-run the following command to install onnxruntime:
-```shell
-pip install onnxruntime
-```
-
-### Step2: Get ONNX models
-
-Users might download our pre-generated ONNX models or convert their own models to ONNX.
-
-#### Download ONNX models.
+### Download ONNX models.
 
 | Model | Parameters | GFLOPs | Test Size | mAP | Weights |
 |:------| :----: | :----: | :---: | :---: | :---: |
@@ -25,7 +14,8 @@ Users might download our pre-generated ONNX models or convert their own models t
 |  YOLOX-Darknet53| 63.72M | 185.3 | 640x640 |48.0 | [github](https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0/yolox_darknet.onnx) |
 |  YOLOX-X | 99.1M | 281.9 | 640x640 |51.5 | [github](https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0/yolox_x.onnx) |
 
-#### Convert Your Model to ONNX
+
+### Convert Your Model to ONNX
 
 First, you should move to <YOLOX_HOME> by:
 ```shell
@@ -48,7 +38,7 @@ Notes:
     dummy_input = torch.randn(1, 3, exp.test_size[0], exp.test_size[1])
     ```
 
-1. Convert a standard YOLOX model by -f. When using -f, the above command is equivalent to:
+2. Convert a standard YOLOX model by -f. When using -f, the above command is equivalent to:
 
 ```shell
 python3 tools/export_onnx.py --output-name yolox_s.onnx -f exps/default/yolox_s.py -c yolox_s.pth
@@ -60,7 +50,7 @@ python3 tools/export_onnx.py --output-name yolox_s.onnx -f exps/default/yolox_s.
 python3 tools/export_onnx.py --output-name your_yolox.onnx -f exps/your_dir/your_yolox.py -c your_yolox.pth
 ```
 
-### Step3: ONNXRuntime Demo
+### ONNXRuntime Demo
 
 Step1.
 ```shell

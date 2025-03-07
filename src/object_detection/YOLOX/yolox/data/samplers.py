@@ -26,6 +26,12 @@ class YoloBatchSampler(torchBatchSampler):
         for batch in super().__iter__():
             yield [(self.mosaic, idx) for idx in batch]
 
+    # def __iter__(self):
+    #     for batch in super().__iter__():
+    #         tmp = [(self.mosaic, idx) for idx in batch]
+    #         print(tmp)
+    #         yield tmp
+
 
 class InfiniteSampler(Sampler):
     """
@@ -72,6 +78,7 @@ class InfiniteSampler(Sampler):
             self._infinite_indices(), start, None, self._world_size
         )
 
+
     def _infinite_indices(self):
         g = torch.Generator()
         g.manual_seed(self._seed)
@@ -80,6 +87,18 @@ class InfiniteSampler(Sampler):
                 yield from torch.randperm(self._size, generator=g)
             else:
                 yield from torch.arange(self._size)
+
+
+    # def _infinite_indices(self):
+    #     g = torch.Generator()
+    #     g.manual_seed(self._seed)
+    #     while True:
+    #         if self._shuffle:
+    #             idxs = torch.randperm(self._size, generator=g)
+    #         else:
+    #             idxs = torch.arange(self._size)
+    #         print(idxs)
+    #         yield from idxs
 
     def __len__(self):
         return self._size // self._world_size

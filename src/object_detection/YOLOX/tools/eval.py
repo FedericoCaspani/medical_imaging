@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # Copyright (c) Megvii, Inc. and its affiliates.
+from setproctitle import setproctitle
+setproctitle("python3 eval.py")
 
 import argparse
 import os
@@ -144,14 +146,14 @@ def main(exp, args, num_gpu):
         exp.nmsthre = args.nms
     if args.tsize is not None:
         exp.test_size = (args.tsize, args.tsize)
+    
+    evaluator = exp.get_evaluator(args.batch_size, is_distributed, args.test, args.legacy)
+    evaluator.per_class_AP = True
+    evaluator.per_class_AR = True
 
     model = exp.get_model()
     logger.info("Model Summary: {}".format(get_model_info(model, exp.test_size)))
     logger.info("Model Structure:\n{}".format(str(model)))
-
-    evaluator = exp.get_evaluator(args.batch_size, is_distributed, args.test, args.legacy)
-    evaluator.per_class_AP = True
-    evaluator.per_class_AR = True
 
     torch.cuda.set_device(rank)
     model.cuda(rank)
@@ -176,15 +178,20 @@ def main(exp, args, num_gpu):
         model = fuse_model(model)
 
     if args.trt:
+        print(args.fuse, is_distributed)
         assert (
-            not args.fuse and not is_distributed and args.batch_size == 1
+            not args.fuse and not is_distributed and args.batch_size >= 1
         ), "TensorRT model is not support model fusing and distributed inferencing!"
-        trt_file = os.path.join(file_name, "model_trt.pth")
+        # trt_file = os.path.join(file_name, "model_trt.pth")
+        trt_file = args.ckpt
         assert os.path.exists(
             trt_file
         ), "TensorRT model is not found!\n Run tools/trt.py first!"
         model.head.decode_in_inference = False
         decoder = model.head.decode_outputs
+        # print('\n\n\n\n\nDECODER:', type(decoder))
+        # print(decoder)
+        # print('-------------------\n\n\n\n\n')
     else:
         trt_file = None
         decoder = None

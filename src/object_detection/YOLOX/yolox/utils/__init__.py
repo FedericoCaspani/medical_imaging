@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 # Copyright (c) Megvii Inc. All rights reserved.
 
 from .allreduce_norm import *
@@ -11,7 +12,7 @@ from .ema import *
 from .logger import WandbLogger, setup_logger
 from .lr_scheduler import LRScheduler
 from .metric import *
-from .mlflow_logger import MlflowLogger
 from .model_utils import *
 from .setup_env import *
 from .visualize import *
+from .seed_all import seed_everything

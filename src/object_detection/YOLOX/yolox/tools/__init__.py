@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 # Copyright (c) Megvii Inc. All rights reserved.
 
 # This file is used for package installation. Script of train/eval/export will be available.
 
-import sys
 from importlib import abc, util
+import sys
 from pathlib import Path
 
 _TOOLS_PATH = Path(__file__).resolve().parent.parent.parent / "tools"
