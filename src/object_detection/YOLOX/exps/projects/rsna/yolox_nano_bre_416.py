@@ -9,7 +9,7 @@ from yolox.exp import Exp as MyExp
 
 import torch.nn as nn
 
-from src.settings import SETTINGS
+# from src.settings import SETTINGS
 
 
 
@@ -107,10 +107,9 @@ class Exp(MyExp):
         self.dataset = None
         self.seed = 42
 
-        self.output_dir = os.path.join(SETTINGS.MODEL_CHECKPOINT_DIR, 'yolox_roi_det')
+        self.output_dir = os.path.join(os.getcwd(), 'checkpoints', 'yolox_roi_det') # self.output_dir = os.path.join(SETTINGS.MODEL_CHECKPOINT_DIR, 'yolox_roi_det')
         # dir of dataset images, if data_dir is None, this project will use `datasets` dir
-        self.data_dir = os.path.join(SETTINGS.PROCESSED_DATA_DIR,
-                                    'roi_det_yolox', 'coco_format')
+        self.data_dir = os.path.join(os.getcwd(), 'datasets', 'processed', 'roi_det_yolox', 'coco_format') # self.data_dir = os.path.join(SETTINGS.PROCESSED_DATA_DIR, 'roi_det_yolox', 'coco_format')
         # name of annotation file for training
         self.train_ann = 'instances_train2017.json'
         # name of annotation file for evaluation
